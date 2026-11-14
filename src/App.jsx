@@ -6,7 +6,7 @@ import { parseQuery } from "./lib/skyQuery";
 
 // Edit this block first: name and copy are placeholders.
 const PROJECT = {
-  name: "Your Project Name",
+  name: "SPHEREx Explorer",
   headline: "Watch the sky change between visits.",
   lede: "Enter a patch of sky and flip through SPHEREx images of it, taken on different dates, to spot anything that moves.",
 };
