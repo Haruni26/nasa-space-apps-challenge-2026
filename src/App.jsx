@@ -4,7 +4,6 @@ import QuickFacts from "./components/QuickFacts";
 import Explorer from "./components/Explorer";
 import { parseQuery } from "./lib/skyQuery";
 
-// Edit this block first: name and copy are placeholders.
 const PROJECT = {
   name: "SPHEREx Explorer",
   headline: "Watch the sky change between visits.",
@@ -38,7 +37,7 @@ export default function App() {
         </header>
         <main id="top">
           <section className="pt-12 pb-12 md:pb-20">
-            <h1 className="mb-5 max-w-[40rem] font-serif text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.05] font-medium tracking-[-0.02em]">
+            <h1 className="mb-5 max-w-160 font-serif text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.05] font-medium tracking-[-0.02em]">
               {PROJECT.headline}
             </h1>
             <p className="mb-8 max-w-xl text-xl text-muted">{PROJECT.lede}</p>
@@ -63,7 +62,7 @@ export default function App() {
 
       <footer className="border-t border-rule pt-8 pb-12 text-[0.95rem] text-muted">
         <div className={WRAP}>
-          <p className="max-w-[44rem]">
+          <p className="max-w-176">
             Moving objects shown here are candidates for further checking, not
             confirmed discoveries. SPHEREx data: NASA/JPL-Caltech/IPAC. Built
             for the NASA Space Apps Challenge.
