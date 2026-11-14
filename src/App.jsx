@@ -1,122 +1,75 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useState } from "react";
+import SearchBar from "./components/SearchBar";
+import QuickFacts from "./components/QuickFacts";
+import Explorer from "./components/Explorer";
+import { parseQuery } from "./lib/skyQuery";
 
-function App() {
-  const [count, setCount] = useState(0)
+// Edit this block first: name and copy are placeholders.
+const PROJECT = {
+  name: "Your Project Name",
+  headline: "Watch the sky change between visits.",
+  lede: "Enter a patch of sky and flip through SPHEREx images of it, taken on different dates, to spot anything that moves.",
+};
+
+// Repeated class strings live here so a style change happens in one place.
+const WRAP = "mx-auto max-w-[68rem] px-6";
+const BAND = "border-t border-rule py-16";
+const H2 = "mb-6 font-serif text-3xl font-medium";
+
+export default function App() {
+  // Starts from the URL, so a link like /?ra=133.795&dec=-7.245&fov=5 opens that view.
+  const [query, setQuery] = useState(() => parseQuery(window.location.search));
 
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+      <div className={WRAP}>
+        <header className="flex items-center justify-between py-5">
+          <a className="font-serif text-[1.35rem] font-semibold" href="#top">
+            {PROJECT.name}
+          </a>
+          <nav className="flex gap-6" aria-label="Main">
+            <a className="text-muted hover:text-ink" href="#facts">
+              Quick facts
+            </a>
+            <a className="text-muted hover:text-ink" href="#explorer">
+              Explorer
+            </a>
+          </nav>
+        </header>
+        <main id="top">
+          <section className="pt-12 pb-12 md:pb-20">
+            <h1 className="mb-5 max-w-[40rem] font-serif text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.05] font-medium tracking-[-0.02em]">
+              {PROJECT.headline}
+            </h1>
+            <p className="mb-8 max-w-xl text-xl text-muted">{PROJECT.lede}</p>
+            <SearchBar initial={query} onSearch={setQuery} />
+          </section>
+        </main>
+      </div>
+
+      <section className={BAND} id="facts">
+        <div className={WRAP}>
+          <h2 className={H2}>Quick facts</h2>
+          <QuickFacts query={query} />
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
+      </section>
+
+      <section className={BAND} id="explorer">
+        <div className={WRAP}>
+          <h2 className={H2}>Explorer</h2>
+          <Explorer query={query} />
+        </div>
+      </section>
+
+      <footer className="border-t border-rule pt-8 pb-12 text-[0.95rem] text-muted">
+        <div className={WRAP}>
+          <p className="max-w-[44rem]">
+            Moving objects shown here are candidates for further checking, not
+            confirmed discoveries. SPHEREx data: NASA/JPL-Caltech/IPAC. Built
+            for the NASA Space Apps Challenge.
           </p>
         </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+      </footer>
     </>
-  )
+  );
 }
-
-export default App
