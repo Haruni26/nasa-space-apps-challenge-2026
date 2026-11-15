@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* Design tokens. Each name becomes utilities, e.g. --color-ink -> bg-ink, text-ink, border-ink. */
 @theme {
   --color-plate: #dde3ea;
   --color-panel: #f3f6fa;
@@ -12,7 +11,6 @@
   --font-sans: "IBM Plex Sans", system-ui, sans-serif;
 }
 
-/* Page-wide defaults that apply to plain elements. */
 @layer base {
   body {
     background-color: var(--color-plate);
