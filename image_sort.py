@@ -66,27 +66,21 @@ for obj in range(len(obj_names)):
         print(img_data.shape)  # (height, width)
 
         ### --- TRIM EXTREMES AND ASINH STRETCH --- ###
-        # Convert to float and mask out NaNs orinfs so percentile calculations don't break
         clean_data = np.array(img_data, dtype=np.float64)
-        
-        # Use nanpercentile to safely ignore bad pixels/NaNs
         vmin, vmax = np.nanpercentile(clean_data, [1.0, 99.0])
         
-        # Guard against flat images
         if vmin == vmax or np.isnan(vmin):
             normalized_data = np.zeros_like(clean_data)
         else:
-            # Linearly normalize and clip to [0, 1]
             normalized_data = (clean_data - vmin) / (vmax - vmin)
             normalized_data = np.nan_to_num(normalized_data, nan=0.0)
             normalized_data = np.clip(normalized_data, 0.0, 1.0)
             
-        # Asinh stretch onto array directly 
         a_stretch = 0.1
         stretch = AsinhStretch(a=a_stretch)
         stretched_data = stretch(normalized_data)
 
-        ### --- SAVE NEW IMAGES --- ###
+        ### --- SAVE NEW IMAGES (PRESERVING EXACT PIXEL SIZE) --- ###
         obs_time = hdr_img.get('MJD-OBS', 0)
         det_id   = hdr_img.get('DETECTOR', 1)
         
@@ -95,7 +89,23 @@ for obj in range(len(obj_names)):
         
         new_lin_filename     = f'{obs_time_str}_{prefix}_{det_id_str}_lin.png'
         new_stretch_filename = f'{obs_time_str}_{prefix}_{det_id_str}_stretch.png'
-        
-        # Pass vmin=0, vmax=1 explicitly because data is already scaled
-        plt.imsave(img_lin_dir / new_lin_filename, normalized_data, cmap="gray", vmin=0, vmax=1)
-        plt.imsave(img_stretch_dir / new_stretch_filename, stretched_data, cmap="gray", vmin=0, vmax=1)
+
+        # Get exact dimensions of your 2D array (height, width)
+        height, width = img_data.shape
+
+        # Helper function to save figure matching exact pixel dimensions without whitespace
+        def save_exact_size(data, filepath):
+            # Figure size in inches derived from pixels at 100 DPI
+            dpi = 100
+            fig = plt.figure(figsize=(width / dpi, height / dpi), dpi=dpi)
+            ax = fig.add_axes([0, 0, 1, 1])  # Fill entire figure canvas
+            ax.set_axis_off()                 # Remove borders/axes ticks
+            
+            ax.imshow(data, origin="lower", cmap="gray", vmin=0, vmax=1, interpolation="nearest")
+            
+            fig.savefig(filepath, dpi=dpi, bbox_inches='tight', pad_inches=0)
+            plt.close(fig)
+
+        # Save both linear and stretched versions at exact pixel dimensions
+        save_exact_size(normalized_data, img_lin_dir / new_lin_filename)
+        save_exact_size(stretched_data, img_stretch_dir / new_stretch_filename)
