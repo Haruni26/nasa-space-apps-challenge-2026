@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   DEFAULT_FOV,
   FOV_OPTIONS,
-  PRESETS,
   findPreset,
   isValid,
   parseCoords,
@@ -77,19 +76,7 @@ export default function SearchBar({ initial, onSearch }) {
           Search
         </button>
       </div>
-      <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-muted">
-        <span>Try</span>
-        {PRESETS.map((p) => (
-          <button
-            key={p.name}
-            type="button"
-            className="cursor-pointer rounded border border-ink px-3.5 py-1.5 text-ink hover:bg-ink/10"
-            onClick={() => setText(`${p.ra}, ${p.dec}`)}
-          >
-            {p.name}
-          </button>
-        ))}
-      </div>
+
       {error && (
         <p className="mt-3 text-signal" role="alert">
           {error}
