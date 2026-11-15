@@ -5,7 +5,7 @@ import Explorer from "./components/Explorer";
 import { parseQuery } from "./lib/skyQuery";
 
 const PROJECT = {
-  name: "SPHEREx Explorer",
+  name: "I.R.I.S",
   headline: "Watch the sky change between visits.",
   lede: "Enter a patch of sky and flip through SPHEREx images of it, taken on different dates, to spot anything that moves.",
 };
